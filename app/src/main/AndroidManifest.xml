@@ -10,6 +10,14 @@
 	    android:roundIcon = "@mipmap/ic_launcher_round"
 	    android:supportsRtl = "true"
 	    android:theme = "@style/AppTheme">
+        <activity android:name = ".ColorsActivity">
+        </activity>
+        <activity android:name = ".FamilyActivity">
+        </activity>
+        <activity android:name = ".PhrasesActivity">
+        </activity>
+        <activity android:name = ".NumbersActivity">
+        </activity>
         <activity android:name = ".MainActivity">
             <intent-filter>
                 <action android:name = "android.intent.action.MAIN" />
