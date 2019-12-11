@@ -16,7 +16,9 @@
         </activity>
         <activity android:name = ".PhrasesActivity">
         </activity>
-        <activity android:name = ".NumbersActivity">
+        <activity
+	        android:name = ".NumbersActivity"
+	        android:label = "Numbers">
         </activity>
         <activity android:name = ".MainActivity">
             <intent-filter>
