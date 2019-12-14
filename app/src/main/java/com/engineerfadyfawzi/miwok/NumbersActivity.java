@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -41,8 +42,8 @@ public class NumbersActivity extends AppCompatActivity
         // Find the {@link ListView) object in the view hierarchy of the {@link Activity}.
         // There should be a {@link ListView} with the view ID called list, which is declared
         // in the activity_numbers.xml layout file.
-        ListView listView = findViewById( R.id.list_view );
-    
+        GridView listView = findViewById( R.id.grid_view );
+        
         // Make the {@link ListView} use the {@link ArrayAdapter} we created above, so that the
         // {@link ListView} will display list items for each word in the list of words.
         // Do this by calling the setAdapter method on the {@link ListView} object and pass in
