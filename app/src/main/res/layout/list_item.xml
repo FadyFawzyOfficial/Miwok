@@ -8,13 +8,13 @@
 	android:padding = "16dp">
 	
 	<TextView
-		android:id = "@+id/miwok_word_text_view"
+		android:id = "@+id/miwok_translation_text_view"
 		android:layout_width = "match_parent"
 		android:layout_height = "wrap_content"
 		tools:text = "lutti" />
 	
 	<TextView
-		android:id = "@+id/english_word_text_view"
+		android:id = "@+id/default_translation_text_view"
 		android:layout_width = "match_parent"
 		android:layout_height = "wrap_content"
 		tools:text = "one" />
