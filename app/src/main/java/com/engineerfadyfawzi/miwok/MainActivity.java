@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick( View view )
             {
                 // Create a new intent to open the {@link PhrasesActivity}
-                Intent phrasesIntent = new Intent( MainActivity.this, ColorsActivity.class );
+                Intent phrasesIntent = new Intent( MainActivity.this, PhrasesActivity.class );
                 
                 // Start the new activity
                 startActivity( phrasesIntent );

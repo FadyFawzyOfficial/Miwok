@@ -14,9 +14,9 @@ public class NumbersActivity extends AppCompatActivity
     protected void onCreate( Bundle savedInstanceState )
     {
         super.onCreate( savedInstanceState );
-        setContentView( R.layout.activity_numbers );
+        setContentView( R.layout.word_list );
         
-        // create a list fo words
+        // create a list of words
         ArrayList< Word > words = new ArrayList< Word >();
         words.add( new Word( "one", "lutti" ) );
         words.add( new Word( "two", "otiiko" ) );
@@ -35,7 +35,7 @@ public class NumbersActivity extends AppCompatActivity
         
         // Find the {@link ListView) object in the view hierarchy of the {@link Activity}.
         // There should be a {@link ListView} with the view ID called list, which is declared
-        // in the activity_numbers.xml layout file.
+        // in the word_list.xml layout file.
         ListView listView = findViewById( R.id.list_view );
         
         // Make the {@link ListView} use the {@link WordAdapter} we created above, so that the
