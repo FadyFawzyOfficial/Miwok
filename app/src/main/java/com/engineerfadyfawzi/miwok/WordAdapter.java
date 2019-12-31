@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -18,38 +19,65 @@ public class WordAdapter extends ArrayAdapter< Word >
     /**
      * Create a new {@link WordAdapter} object.
      *
+     * This is our own custom constructor (it doesn't mirror a superclass constructor).
+     * The context is used to infalte the layout file, and the list is the data we want
+     * to populate into the lists.
+     *
      * @param context is the current context (i.e. Activity) that adapter is being created in.
+     * The current context. Used to inflate the layout file.
      * @param words is the list of {@link Word}s to be displayed.
+     * A list of Word objects to display in a list
      */
     public WordAdapter( Context context, ArrayList< Word > words )
     {
+        // Here, we initialize the ArrayAdapter's internal storage for the context and the list.
+        // the second argument is used when the ArrayAdapter is populating a single TextView.
+        // Because this is a custom adapter for two TextViews and an ImageView, the adapter is not
+        // going to use this second argument, so it can be any value. Here, we used 0.
         super( context, 0, words );
     }
     
+    /**
+     * Provides a view for an Adapter View ( ListView, GridView, etc.)
+     *
+     * @param position The position in the list of data that should be displayed in the
+     * list item View.
+     * @param convertView the recycled view to populate.
+     * @param parent The parent ViewGroup that is used for inflation.
+     * @return The View for the position in the AdapterView.
+     */
     @Override
     public View getView( int position, View convertView, ViewGroup parent )
     {
-        // check if an existing view is being reused, otherwise inflate the view
+        // Check if an existing view is being reused, otherwise inflate the view
         View listItemView = convertView;
         if ( listItemView == null )
             listItemView = LayoutInflater.from( getContext() ).inflate( R.layout.list_item, parent, false );
-    
+        
         // Get the {@link Word} object located at this position in the list
         Word currentWord = getItem( position );
-    
+        
         // Find the TextView in the list_item.xml layout with the ID miwok_translation_text_view.
         TextView miwokTranslationTextView = listItemView.findViewById( R.id.miwok_translation_text_view );
-    
+        
         // Get the Miwok translation from the currentWord object and set this text on the Miwok TextView.
         miwokTranslationTextView.setText( currentWord.getMiwokTranslation() );
-    
+        
         // Find the TextView in the list_item.xml layout with the ID default_translation_text_view.
         TextView defaultTranslationTextView = listItemView.findViewById( R.id.default_translation_text_view );
-    
+        
         // Get the default translation from the currentWord object and set this text on the default TextView.
         defaultTranslationTextView.setText( currentWord.getDefaultTranslation() );
-    
-        // Return the whole list item layout (containing 2 TextViews) so that it can be shown in the ListView.
+        
+        // Find the ImageView in the list_item.xml layout with the ID image.
+        ImageView image = listItemView.findViewById( R.id.image );
+        
+        // Get the image resource ID from the currentWord object and
+        // Set the ImageView to the image resource specified in the current Word
+        image.setImageResource( currentWord.getImageResourceId() );
+        
+        // Return the whole list item layout (containing 2 TextViews and an ImageView)
+        // so that it can be shown in the ListView.
         return listItemView;
     }
 }
