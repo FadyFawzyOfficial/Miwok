@@ -2,21 +2,13 @@ package com.engineerfadyfawzi.miwok;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
 public class ColorsActivity extends AppCompatActivity
 {
-    /**
-     * Handles playback of all the sound files
-     */
-    private MediaPlayer mMediaPlayer;
-    
     @Override
     protected void onCreate( Bundle savedInstanceState )
     {
@@ -46,23 +38,5 @@ public class ColorsActivity extends AppCompatActivity
         // Make the {@link ListView} use the {@link WordAdapter} we created above, so that the
         // {@link ListView} will display list items for each {@link Word} in the list of words.
         listView.setAdapter( wordsAdapter );
-        
-        // Set a click listener to play the audio when the list item is clicked on
-        listView.setOnItemClickListener( new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick( AdapterView< ? > adapterView, View view, int position, long l )
-            {
-                // Get the {@link Word} object at the given position the user clicked on
-                Word word = words.get( position );
-                
-                // Create and setup the {@link MediaPlayer} for the audio resource associated
-                // with the current word
-                mMediaPlayer = MediaPlayer.create( ColorsActivity.this, word.getAudioResourceId() );
-                
-                // Start the audio file
-                mMediaPlayer.start();
-            }
-        } );
     }
 }
