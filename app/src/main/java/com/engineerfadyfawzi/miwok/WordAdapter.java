@@ -1,6 +1,7 @@
 package com.engineerfadyfawzi.miwok;
 
 import android.content.Context;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,10 +45,70 @@ public class WordAdapter extends ArrayAdapter< Word >
     };
     
     /**
+     * Handles audio focus when playing a sound file
+     */
+    private AudioManager mAudioManager;
+    
+    /**
+     * This listener gets triggered whenever the audio focus changes
+     * (i.e., we gain or lose audio focus because of another app or device).
+     */
+    private AudioManager.OnAudioFocusChangeListener mOnAudioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener()
+    {
+        @Override
+        public void onAudioFocusChange( int focusChange )
+        {
+            switch ( focusChange )
+            {
+                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
+                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
+                    // Pause playback because your Audio Focus was
+                    // temporarily stolen, but will be back soon.
+                    // i.e. for a phone call
+                    
+                    // Lower the volume, because something else is also playing audio over you.
+                    // i.e. for notifications or navigation directions, So
+                    // Depending on your audio playback, you may prefer to pause playback here instead.
+                    
+                    // The AUDIOFOCUS_LOSS_TRANSIENT case means that we've lost audio focus
+                    // for a short amount og time.
+                    // The AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK case means that our app is allowed to
+                    // continue playing sound but at a lower volume.
+                    // We'll both cases the same way because our app is playing short sound files.
+                    
+                    // Pause playback and reset player to the start of the file. That way, we can
+                    // play the word from the beginning when we resume playback.
+                    mMediaPlayer.pause();
+                    mMediaPlayer.seekTo( 0 );
+                    break;
+                case AudioManager.AUDIOFOCUS_GAIN:
+                    // Resume playback, because you hold the Audio Focus again!
+                    // i.e. the phone call ended or the nav directions are finished
+                    // If you implement ducking and lower the volume,
+                    // be sure to return it to normal here, as well.
+                    
+                    // The AUDIOFOCUS_GAIN case means we have regained focus and can resume playback.
+                    mMediaPlayer.start();
+                    break;
+                case AudioManager.AUDIOFOCUS_LOSS:
+                    // Stop playback, because you lost the Audio Focus.
+                    // i.e. the user started some other playback app
+                    // Remember to unregister your controls/buttons here. And release the Audio Focus!
+                    
+                    // The AUDIOFOCUS_LOSS case means we've lost audio focus and
+                    // Stop playback and clean up resources.
+                    releaseMediaPlayer();
+                    break;
+            }
+        }
+    };
+    
+    
+    /**
      * Create a new {@link WordAdapter} object.
      *
      * This is our own custom constructor (it doesn't mirror a superclass constructor).
-     * The context is used to infalte the layout file, and the list is the data we want
+     * The context is used to inflate the layout file, and the list is the data we want
      * to populate into the lists.
      *
      * @param context is the current context (i.e. Activity) that adapter is being created in.
@@ -64,6 +125,9 @@ public class WordAdapter extends ArrayAdapter< Word >
         // going to use this second argument, so it can be any value. Here, we used 0.
         super( context, 0, words );
         mColorResourceId = colorResourceId;
+        
+        // Create and setup the {@link AudioManager} to request audio focus
+        mAudioManager = ( AudioManager ) getContext().getSystemService( Context.AUDIO_SERVICE );
     }
     
     /**
@@ -142,16 +206,27 @@ public class WordAdapter extends ArrayAdapter< Word >
                 // play a different sound file
                 releaseMediaPlayer();
                 
-                // Create and setup the {@link MediaPlayer} for the audio resource associated
-                // with the current word object (in the array list)
-                mMediaPlayer = MediaPlayer.create( getContext(), currentWord.getAudioResourceId() );
+                // Request audio focus so in order to play the audio file, The app needs to play a
+                // short audio file, so we will request audio focus with a short amount of time
+                // with AUDIOFOCUS_GAIN_TRANSIENT
+                int result = mAudioManager.requestAudioFocus( mOnAudioFocusChangeListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT );
                 
-                // Start the audio file
-                mMediaPlayer.start();
-                
-                // Setup a listener on the media player, so that we can stop and release the
-                // media player once the sound has finished playing.
-                mMediaPlayer.setOnCompletionListener( mCompletionListener );
+                if ( result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED )
+                {
+                    // We have an audio focus now.
+                    // Start playback
+                    
+                    // Create and setup the {@link MediaPlayer} for the audio resource associated
+                    // with the current word object (in the array list)
+                    mMediaPlayer = MediaPlayer.create( getContext(), currentWord.getAudioResourceId() );
+                    
+                    // Start the audio file
+                    mMediaPlayer.start();
+                    
+                    // Setup a listener on the media player, so that we can stop and release the
+                    // media player once the sound has finished playing.
+                    mMediaPlayer.setOnCompletionListener( mCompletionListener );
+                }
             }
         } );
         
@@ -176,6 +251,10 @@ public class WordAdapter extends ArrayAdapter< Word >
             // setting the media player to null is an easy way to tell that the media player
             // is not configured to play an audio file at the moment.
             mMediaPlayer = null;
+            
+            // Regardless of whether or not we were granted audio focus, abandon it.
+            // Tis also unregisters the AudioFocusChangeListener so we don't get anymore callbacks.
+            mAudioManager.abandonAudioFocus( mOnAudioFocusChangeListener );
         }
     }
 }
