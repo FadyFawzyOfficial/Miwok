@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 public class PhrasesActivity extends AppCompatActivity
 {
+    private WordAdapter wordAdapter;
+    
     @Override
     protected void onCreate( Bundle savedInstanceState )
     {
@@ -30,7 +32,7 @@ public class PhrasesActivity extends AppCompatActivity
         
         // Create an {@link WordAdapter}, whose data source is a list of {@link Word}s.
         // The adapter knows how to create list items for each item in the list.
-        WordAdapter wordsAdapter = new WordAdapter( this, words, R.color.category_phrases );
+        wordAdapter = new WordAdapter( this, words, R.color.category_phrases );
         
         // Find the {@link ListView) object in the view hierarchy of the {@link Activity}.
         // There should be a {@link ListView} with the view ID called list, which is declared
@@ -39,6 +41,16 @@ public class PhrasesActivity extends AppCompatActivity
         
         // Make the {@link ListView} use the {@link WordAdapter} we created above, so that the
         // {@link ListView} will display list items for each {@link Word} in the list of words.
-        listView.setAdapter( wordsAdapter );
+        listView.setAdapter( wordAdapter );
+    }
+    
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+        
+        // When the activity is stopped, release the media player resources because we won't
+        // be playing any more sounds.
+        wordAdapter.releaseMediaPlayer();
     }
 }

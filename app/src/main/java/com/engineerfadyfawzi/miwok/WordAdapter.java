@@ -163,7 +163,7 @@ public class WordAdapter extends ArrayAdapter< Word >
     /**
      * Clean up the media player by releasing its resources.
      */
-    private void releaseMediaPlayer()
+    public void releaseMediaPlayer()
     {
         // If the media player is not null, then it may be currently playing a sound.
         if ( mMediaPlayer != null )
