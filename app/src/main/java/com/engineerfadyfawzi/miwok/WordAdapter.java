@@ -154,13 +154,13 @@ public class WordAdapter extends ArrayAdapter< Word >
         TextView miwokTranslationTextView = listItemView.findViewById( R.id.miwok_translation_text_view );
         
         // Get the Miwok translation from the currentWord object and set this text on the Miwok TextView.
-        miwokTranslationTextView.setText( currentWord.getMiwokTranslation() );
+        miwokTranslationTextView.setText( currentWord.getMiwokTranslationId() );
         
         // Find the TextView in the list_item.xml layout with the ID default_translation_text_view.
         TextView defaultTranslationTextView = listItemView.findViewById( R.id.default_translation_text_view );
         
         // Get the default translation from the currentWord object and set this text on the default TextView.
-        defaultTranslationTextView.setText( currentWord.getDefaultTranslation() );
+        defaultTranslationTextView.setText( currentWord.getDefaultTranslationId() );
         
         // Find the ImageView in the list_item.xml layout with the ID image.
         ImageView imageView = listItemView.findViewById( R.id.image );
