@@ -5,9 +5,15 @@
 	xmlns:tools = "http://schemas.android.com/tools"
 	android:layout_width = "match_parent"
 	android:layout_height = "match_parent"
-	android:background = "@color/tan_background"
+	android:background = "@color/colorPrimary"
 	android:orientation = "vertical"
 	tools:context = ".MainActivity">
+	
+	<com.google.android.material.tabs.TabLayout
+		android:id = "@+id/tab_layout"
+		style = "@style/CategoryTab"
+		android:layout_width = "match_parent"
+		android:layout_height = "wrap_content" />
 	
 	<androidx.viewpager.widget.ViewPager
 		android:id = "@+id/view_pager"
