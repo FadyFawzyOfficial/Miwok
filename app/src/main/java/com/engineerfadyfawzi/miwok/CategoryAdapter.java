@@ -1,5 +1,8 @@
 package com.engineerfadyfawzi.miwok;
 
+import android.content.Context;
+
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -11,14 +14,21 @@ import androidx.fragment.app.FragmentPagerAdapter;
 public class CategoryAdapter extends FragmentPagerAdapter
 {
     /**
+     * Context of the app
+     */
+    private Context mContext;
+    
+    /**
      * Create a new {@link CategoryAdapter} object.
      *
+     * @param context is the context of the app
      * @param fm is the fragment manager that will keep each fragment's state in the adapter
      * across swipes.
      */
-    public CategoryAdapter(FragmentManager fm )
+    public CategoryAdapter( Context context, FragmentManager fm )
     {
         super( fm );
+        mContext = context;
     }
     
     /**
@@ -47,5 +57,25 @@ public class CategoryAdapter extends FragmentPagerAdapter
     public int getCount()
     {
         return 4;
+    }
+    
+    /**
+     * Return the pageTitle that should be displayed for the each page at the top.
+     */
+    @Nullable
+    @Override
+    public CharSequence getPageTitle( int position )
+    {
+        switch ( position )
+        {
+            case 0:
+                return mContext.getString( R.string.category_numbers );
+            case 1:
+                return mContext.getString( R.string.category_family );
+            case 2:
+                return mContext.getString( R.string.category_colors );
+            default:
+                return mContext.getString( R.string.category_phrases );
+        }
     }
 }
